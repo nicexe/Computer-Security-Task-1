@@ -17,6 +17,7 @@ The simplest classical symmetric cipher is the Caesar cipher. The purpose of thi
 
 You are free to use a programming language of your choice.
 
-## Deliverables:
+**Deliverables:**
+
 1. A document in **pdf** format illustrating the output for all subtasks above.
 2. The source code of the program
