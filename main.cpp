@@ -34,7 +34,7 @@ int main()
             clearText = userInput();
             key = -1;
 
-            while ((key < 0) && (key > 25))
+            while ((key < 0) || (key > 25))
             {
                 cout << "Enter encryption key (0-25): ";
                 string temp = userInput();
@@ -44,7 +44,7 @@ int main()
                     key = stoi(temp);
                 }
 
-                if (!((key < 0) && (key > 25)))
+                if (!((key >= 0) && (key <= 25)))
                 {
                     cout << "Key must be numeric and between 0 and 25\n";
                 }
@@ -52,7 +52,7 @@ int main()
 
             cipherText = encrypt(key, clearText);
 
-            cout << "\nInput:\n" << key << ":" << clearText << "\nOutput:\n" << cipherText;
+            cout << "\nClear-text: " << clearText << "\nKey:        " << key << "\nOutput:     " << cipherText << "\n\n";
 
         }
         else if (option == 2)
@@ -92,7 +92,7 @@ int menuSelection()
     {
         showMenu();
 
-        cin >> option;
+        option = userInput();
 
         if ((option != "0") && (option != "1") && (option != "2") && (option != "3"))
         {
@@ -106,7 +106,7 @@ int menuSelection()
 string userInput()
 {
     string input;
-    cin >> input;
+    getline(cin, input);
 
     return (input);
 }
@@ -134,18 +134,17 @@ char rotateChar(int key, bool encryption, char c)
     if ((c >= 65) && (c <= 90)) // character is capital
     {
         int min = 65, max = 90;
-        c = (((c - min) + key) % (max - min)) + min; // c-min makes the range of c from 65-90 to 0-25, c+min makes the range of c back to 65-90
+        c = (((c - min) + key) % ((max - min)+1)) + min; // c-min makes the range of c from 65-90 to 0-25, c+min makes the range of c back to 65-90
     }
     else if ((c >= 97) && (c <= 122)) // character is not capital
     {
         int min = 97, max = 122;
-        c = (((c - min) + key) % (max - min)) + min; // c-min makes the range of c from 97-122 to 0-25, c+min makes the range of c back to 97-122
+        c = (((c - min) + key) % ((max - min)+1)) + min; // c-min makes the range of c from 97-122 to 0-25, c+min makes the range of c back to 97-122
     }
 
     return (c);
 }
 
-// TODO: Encryption function
 string encrypt(int key, string plainText)
 {
     string cipherText = "", clearText = "";
@@ -154,8 +153,6 @@ string encrypt(int key, string plainText)
     {
         cipherText += rotateChar(key, true, plainText.at(i));
     }
-
-    cout << cipherText; // just to check that it works as it should
 
     return cipherText;
 }
