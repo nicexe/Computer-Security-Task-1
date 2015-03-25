@@ -57,6 +57,29 @@ int main()
         }
         else if (option == 2)
         {
+            cout << "\nEnter clear-text to be decrypted:\n";
+            cipherText = userInput();
+            key = -1;
+
+            while ((key < 0) || (key > 25))
+            {
+                cout << "Enter decryption key (0-25): ";
+                string temp = userInput();
+
+                if (isNumeric(temp))
+                {
+                    key = stoi(temp);
+                }
+
+                if (!((key >= 0) && (key <= 25)))
+                {
+                    cout << "Key must be numeric and between 0 and 25\n";
+                }
+            }
+
+            clearText = decrypt(key, cipherText);
+
+            cout << "\nCipher-text: " << cipherText << "\nKey:         " << key << "\nOutput:      " << clearText << "\n\n";
 
         }
         else if (option == 3)
@@ -145,13 +168,13 @@ char rotateChar(int key, bool encryption, char c)
     return (c);
 }
 
-string encrypt(int key, string plainText)
+string encrypt(int key, string clearText)
 {
-    string cipherText = "", clearText = "";
+    string cipherText = "";
 
-    for (int i = 0; i < plainText.length(); i++)
+    for (int i = 0; i < clearText.length(); i++)
     {
-        cipherText += rotateChar(key, true, plainText.at(i));
+        cipherText += rotateChar(key, true, clearText.at(i));
     }
 
     return cipherText;
@@ -161,6 +184,11 @@ string encrypt(int key, string plainText)
 string decrypt(int key, string cipherText)
 {
     string clearText = "";
+
+    for (int i = 0; i < cipherText.length(); i++)
+    {
+        clearText += rotateChar(key, false, cipherText.at(i));
+    }
 
     return clearText;
 }
