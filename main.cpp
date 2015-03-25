@@ -180,7 +180,6 @@ string encrypt(int key, string clearText)
     return cipherText;
 }
 
-// TODO: Decryption function
 string decrypt(int key, string cipherText)
 {
     string clearText = "";
