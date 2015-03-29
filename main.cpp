@@ -39,9 +39,16 @@ int main()
                 cout << "Enter encryption key (0-25): ";
                 string temp = userInput();
 
-                if (isNumeric(temp))
+                if (temp == "")
                 {
-                    key = stoi(temp);
+                    cout << "Key must not be empty\n";
+                }
+                else
+                {
+                    if (isNumeric(temp))
+                    {
+                        key = stoi(temp);
+                    }
                 }
 
                 if (!((key >= 0) && (key <= 25)))
@@ -59,15 +66,23 @@ int main()
         {
             cout << "\nEnter cipher-text to be decrypted:\n";
             cipherText = userInput();
+            key = -1;
 
             while ((key < 0) || (key > 25))
             {
                 cout << "Enter decryption key (0-25): ";
                 string temp = userInput();
 
-                if (isNumeric(temp))
+                if (temp == "")
                 {
-                    key = stoi(temp);
+                    cout << "Key must not be empty\n";
+                }
+                else
+                {
+                    if (isNumeric(temp))
+                    {
+                        key = stoi(temp);
+                    }
                 }
 
                 if (!((key >= 0) && (key <= 25)))
