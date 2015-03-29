@@ -57,9 +57,8 @@ int main()
         }
         else if (option == 2)
         {
-            cout << "\nEnter clear-text to be decrypted:\n";
+            cout << "\nEnter cipher-text to be decrypted:\n";
             cipherText = userInput();
-            key = -1;
 
             while ((key < 0) || (key > 25))
             {
@@ -151,7 +150,7 @@ char rotateChar(int key, bool encryption, char c)
 {
     if (!encryption) // if it is used for decryption the key must be negative
     {
-        key = -key;
+        key = 26-key % 26;
     }
 
     if ((c >= 65) && (c <= 90)) // character is capital
