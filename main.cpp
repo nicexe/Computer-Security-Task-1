@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -23,6 +24,7 @@ int main()
 {
     int option = -1, key;
     string clearText = "", cipherText = "";
+    int substringLength = -1;
 
     while (option != 0)
     {
@@ -98,7 +100,40 @@ int main()
         }
         else if (option == 3)
         {
+            substringLength = -1;
+            string temp;
 
+            cout << "\nEnter cipher-text to be bruteforced:\n";
+            cipherText = userInput();
+
+            while ((substringLength < 0) || (substringLength > cipherText.length()))
+            {
+                try
+                {
+                    cout << "\nEnter the length of the substring to be used in bruteforce\n(0-" << cipherText.length() << ") (0 selects the whole string):\n";
+
+                    temp = userInput();
+                    if (temp != "")
+                    {
+                        substringLength = stoi(temp);
+                    }
+                } catch (int e)
+                {
+                    cout << "\nException " << e << " caught";
+                }
+
+                if ((substringLength < 0) || (substringLength > cipherText.length()))
+                {
+                    cout << "\nInvalid input. Substring must be numeric and between 0 and " << cipherText.length();
+                }
+            }
+
+            if (substringLength == 0)
+            {
+                substringLength = cipherText.length();
+            }
+
+            bruteforce(cipherText, substringLength);
         }
     }
 
@@ -108,8 +143,7 @@ int main()
 void showMenu()
 {
     //printing the menu
-    cout <<
-            "Select an option from below:\n\n" <<
+    cout << "Select an option from below:\n\n" <<
 
             "    1: Encrypt a string\n" <<
             "    2: Decrypt a string\n" <<
@@ -165,18 +199,18 @@ char rotateChar(int key, bool encryption, char c)
 {
     if (!encryption) // if it is used for decryption the key must be negative
     {
-        key = 26-key % 26;
+        key = 26 - key % 26;
     }
 
     if ((c >= 65) && (c <= 90)) // character is capital
     {
         int min = 65, max = 90;
-        c = (((c - min) + key) % ((max - min)+1)) + min; // c-min makes the range of c from 65-90 to 0-25, c+min makes the range of c back to 65-90
+        c = (((c - min) + key) % ((max - min) + 1)) + min; // c-min makes the range of c from 65-90 to 0-25, c+min makes the range of c back to 65-90
     }
     else if ((c >= 97) && (c <= 122)) // character is not capital
     {
         int min = 97, max = 122;
-        c = (((c - min) + key) % ((max - min)+1)) + min; // c-min makes the range of c from 97-122 to 0-25, c+min makes the range of c back to 97-122
+        c = (((c - min) + key) % ((max - min) + 1)) + min; // c-min makes the range of c from 97-122 to 0-25, c+min makes the range of c back to 97-122
     }
 
     return (c);
@@ -206,8 +240,21 @@ string decrypt(int key, string cipherText)
     return clearText;
 }
 
-// TODO: Bruteforce function
 void bruteforce(string cipherText, int substringLength)
 {
+    cout << "\nKey | ClearText\n____|____";
 
+    for (int bKey = 0; bKey <= 25; bKey++)
+    {
+        string clearText = "";
+
+        for (int i = 0; i < substringLength; i++)
+        {
+            clearText += rotateChar(bKey, false, cipherText.at(i));
+        }
+
+        cout << "\n" << setw(2) << bKey << "  | " << clearText;
+    }
+
+    cout << "\n\n\n";
 }
